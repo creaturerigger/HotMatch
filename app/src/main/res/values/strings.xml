@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">HotMatch</string>
+    <string name="application_logo">Application Logo</string>
+    <string name="not_registered">Not Registered?</string>
+    <string name="login">Login</string>
+    <string name="user_e_mail">User e-mail</string>
+    <string name="user_password">User password</string>
+    <string name="enter_an_e_mail_address">Enter an e-mail address</string>
+    <string name="enter_a_password">Enter a password</string>
+    <string name="re_enter_the_password">Re-enter the password</string>
+    <string name="register">Register</string>
+    <string name="empty_fields">E-mail and password fields can\'t be empty.</string>
+    <string name="is_not_valid_email">You must enter a valid e-mail address!</string>
+    <string name="logging_in">Logging in</string>
+    <string name="register_empty_fields">Email and password fields can\'t be empty!</string>
+    <string name="passwords_must_match">Passwords must match!</string>
+    <string name="user_created">User has been created.</string>
+    <string name="registered_user_message">You have already a registered user, please use your e-mail address and password to log in.</string>
+    <string name="proceed">Proceed</string>
+    <string name="avatars">Avatars</string>
+    <string name="pp_dialog_description">You have to upload a profile image or pick an avatar.</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="pick_an_avatar_please">Pick an avatar please...</string>
+    <string name="user_avatar_image">User avatar image...</string>
+</resources>

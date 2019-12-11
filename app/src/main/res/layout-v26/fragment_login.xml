@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:id="@+id/lf_upper_decoration"
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:background="@drawable/upper_box"
+        android:maxHeight="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <View
+        android:id="@+id/lf_separator_box"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/midline_box"
+        app:layout_constraintBottom_toBottomOf="@+id/lf_upper_decoration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lf_upper_decoration" />
+
+
+    <View
+        android:id="@+id/lf_lower_decoration"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/lower_box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lf_upper_decoration" />
+
+    <ImageView
+        android:id="@+id/lf_app_logo"
+        android:layout_width="150dp"
+        android:layout_height="162dp"
+        android:contentDescription="@string/application_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/lf_upper_decoration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lf_upper_decoration"
+        app:srcCompat="@drawable/applogo" />
+
+    <EditText
+        android:id="@+id/lf_text_edit_email"
+        android:autofillHints="email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="63dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/lf_app_logo"
+        app:layout_constraintStart_toStartOf="@+id/lf_app_logo"
+        app:layout_constraintTop_toBottomOf="@+id/lf_app_logo" />
+
+    <EditText
+        android:id="@+id/lf_text_edit_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/lf_text_edit_email"
+        app:layout_constraintStart_toStartOf="@+id/lf_text_edit_email"
+        app:layout_constraintTop_toBottomOf="@+id/lf_text_edit_email" />
+
+    <TextView
+        android:id="@+id/lf_not_registered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="164dp"
+        android:text="@string/not_registered"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lf_login_button"
+        app:layout_constraintStart_toStartOf="@+id/lf_login_button"
+        app:layout_constraintTop_toBottomOf="@+id/lf_login_button" />
+
+    <Button
+        android:id="@+id/lf_login_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/login"
+        app:layout_constraintEnd_toEndOf="@+id/lf_text_edit_password"
+        app:layout_constraintStart_toStartOf="@+id/lf_text_edit_password"
+        app:layout_constraintTop_toBottomOf="@+id/lf_text_edit_password" />
+</androidx.constraintlayout.widget.ConstraintLayout>
