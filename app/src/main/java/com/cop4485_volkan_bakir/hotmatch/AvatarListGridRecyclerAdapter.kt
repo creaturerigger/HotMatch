@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class AvatarListGridRecyclerAdapter(val avatarList: List<Avatar>, val clickListener: (Avatar) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AvatarListGridRecyclerAdapter(private val avatarList: List<Avatar>, private val clickListener: (Avatar) -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AvatarListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.avatar_list_item, parent, false))
