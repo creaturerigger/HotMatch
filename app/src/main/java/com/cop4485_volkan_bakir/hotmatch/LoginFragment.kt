@@ -70,7 +70,8 @@ class LoginFragment: Fragment() {
             val userPasswordText = userPassword.text.toString()
             val isInfoValid = validateFields(userEmailText, userPasswordText)
             if (isInfoValid) {
-                val isSignedIn = signIn(userEmailText, userPasswordText)
+                var isSignedIn = false
+                isSignedIn = signIn(userEmailText, userPasswordText)
                 Log.d(TAG, "isSignedIn = $isSignedIn")
             }
         }
@@ -117,6 +118,9 @@ class LoginFragment: Fragment() {
                 isSignedIn = if (task.isSuccessful) {
                     val user = auth.currentUser
                     Log.d(TAG, "${user?.displayName} has signed in")
+                    user?.uid?.let {
+                        loadProfileFragment(it)
+                    }
                     true
                 } else {
                     try {
@@ -137,5 +141,12 @@ class LoginFragment: Fragment() {
                 }
             }
         return isSignedIn
+    }
+
+    private fun loadProfileFragment(userId: String){
+        val fragment = UserProfileFragment()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

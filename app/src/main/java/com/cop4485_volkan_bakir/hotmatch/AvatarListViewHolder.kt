@@ -1,6 +1,5 @@
 package com.cop4485_volkan_bakir.hotmatch
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.avatar_list_item.view.*

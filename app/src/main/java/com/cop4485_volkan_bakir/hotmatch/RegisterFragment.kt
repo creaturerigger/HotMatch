@@ -28,6 +28,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
@@ -55,6 +57,7 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
     private lateinit var registerButton: Button
     private lateinit var profileImage: CircleImageView
     private lateinit var auth: FirebaseAuth
+    private lateinit var database: DatabaseReference
 
     private lateinit var photoFile: File
     private lateinit var photoUri: Uri
@@ -231,12 +234,14 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
                         InputMethodManager::class.java
                     )
                     imm?.hideSoftInputFromWindow(view!!.windowToken, 0)
+
+                    val userProfileImageBitmap = imageView2Bitmap(profileImage)
+                    uploadUserImage(userProfileImageBitmap, user)
+                    addUserToFirebaseRTDB(user!!.uid)
                     dialogFragment.apply {
                         setTargetFragment(this@RegisterFragment, PROCEED_LOGIN)
                         show(this@RegisterFragment.requireFragmentManager(), TAG)
                     }
-                    val userProfileImageBitmap = imageView2Bitmap(profileImage)
-                    uploadUserImage(userProfileImageBitmap, user)
                     true
                 } else {
                     // If sign in fails, display a message to the user.
@@ -250,6 +255,18 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
                 }
             }
         return isUserCreated
+    }
+
+    private fun addUserToFirebaseRTDB(userId: String) {
+        database = FirebaseDatabase.getInstance().getReference("users")
+        val gameUser = GameUser(userId, 0, 0, 1)
+        database.child(userId).setValue(gameUser)
+            .addOnSuccessListener {
+                Toast.makeText(context, "User has been created successfully.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "Operation failed! -> $it")
+            }
     }
 
     private fun uploadUserImage(bitmap: Bitmap, user: FirebaseUser?) {

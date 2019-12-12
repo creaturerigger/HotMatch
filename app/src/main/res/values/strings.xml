@@ -21,6 +21,12 @@
     <string name="pp_dialog_description">You have to upload a profile image or pick an avatar.</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
-    <string name="pick_an_avatar_please">Pick an avatar please...</string>
-    <string name="user_avatar_image">User avatar image...</string>
+    <string name="pick_an_avatar_please">Pick an avatar please…</string>
+    <string name="user_avatar_image">User avatar image…</string>
+    <string name="latest_score">Your latest score:</string>
+    <string name="high_score">Your high score:</string>
+    <string name="user_level">Your level:</string>
+    <string name="start_game">Start Game</string>
+    <string name="view_score_board">View Scoreboard</string>
+    <string name="score">Score :</string>
 </resources>
