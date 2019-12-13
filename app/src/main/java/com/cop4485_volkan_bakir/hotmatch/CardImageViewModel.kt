@@ -1,16 +1,17 @@
 package com.cop4485_volkan_bakir.hotmatch
 
 import androidx.lifecycle.ViewModel
+import java.util.*
 
 class CardImageViewModel: ViewModel() {
 
-    val cardImageListLeveOne: List<CardImage> = listOf(
-        CardImage(R.mipmap.monster_01),
-        CardImage(R.mipmap.monster_02),
-        CardImage(R.mipmap.monster_03),
-        CardImage(R.mipmap.monster_04),
-        CardImage(R.mipmap.monster_05),
-        CardImage(R.mipmap.monster_06)
+    val cardImageListLevelOne: MutableList<CardImage> = mutableListOf(
+        CardImage(R.mipmap.monster_01, UUID.randomUUID()),
+        CardImage(R.mipmap.monster_02, UUID.randomUUID()),
+        CardImage(R.mipmap.monster_03, UUID.randomUUID()),
+        CardImage(R.mipmap.monster_01, UUID.randomUUID()),
+        CardImage(R.mipmap.monster_02, UUID.randomUUID()),
+        CardImage(R.mipmap.monster_03, UUID.randomUUID())
     )
 
 }

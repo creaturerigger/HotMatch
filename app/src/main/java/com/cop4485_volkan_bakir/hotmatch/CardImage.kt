@@ -1,3 +1,5 @@
 package com.cop4485_volkan_bakir.hotmatch
 
-data class CardImage(var cardImageId: Int)
+import java.util.*
+
+data class CardImage(var cardImageId: Int, var id: UUID)

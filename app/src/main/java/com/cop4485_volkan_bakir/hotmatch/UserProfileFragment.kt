@@ -44,7 +44,8 @@ class UserProfileFragment : Fragment() {
         userLevelTextView = view.findViewById(R.id.pf_level)
         startGameButton = view.findViewById(R.id.pf_start_game_button)
         viewScoreBoardButton = view.findViewById(R.id.pf_view_score_board)
-
+        startGameButton.isEnabled = false
+        viewScoreBoardButton.isEnabled = false
         startGameButton.setOnClickListener {
             val fragment = GameFragment()
             requireActivity().supportFragmentManager.beginTransaction()
@@ -86,6 +87,7 @@ class UserProfileFragment : Fragment() {
                     highScoreTextView.text = gameUser?.highScore.toString()
                     latestScoreTextView.text = gameUser?.score.toString()
                     userLevelTextView.text = gameUser?.level.toString()
+                    startGameButton.isEnabled = true
                 }
             }
 
