@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -79,17 +78,14 @@ class GameFragment : Fragment() {
         if (clickedCards.size == 2) {
             if (clickedCards[0].second.tag == clickedCards[1].second.tag) {
 
-                for (mPair in clickedCards) {
-                    mPair.second.setOnClickListener(null)
-                }
-                clickedCards.clear()
+                removeItemsFromList(clickedCards)
                 levelCounter--
+                if (levelCounter == 0) {
+                    removeItemsFromList(clickedCards)
+                }
             } else {
 
-                for (mPair in clickedCards) {
-                    mPair.second.setImageResource(gameCard.imageDrawableId)
-                }
-                clickedCards.clear()
+                returnDefaultState(clickedCards, gameCard)
             }
         }
         if (clickedCards.size <= 2) {
@@ -99,6 +95,23 @@ class GameFragment : Fragment() {
         }
 
         Log.d(TAG, "clicked cards size is ${clickedCards.size}")
+    }
+
+    private fun removeItemsFromList(list: MutableList<Pair<CardImage, ImageView>>) {
+        for (mPair in list) {
+            mPair.second.setOnClickListener(null)
+        }
+        list.clear()
+    }
+
+    private fun returnDefaultState(
+        list: MutableList<Pair<CardImage, ImageView>>,
+        gameCard: GameCard
+    ) {
+        for (mPair in list) {
+            mPair.second.setImageResource(gameCard.imageDrawableId)
+        }
+        list.clear()
     }
 
 
