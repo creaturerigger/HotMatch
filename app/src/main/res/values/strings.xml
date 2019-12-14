@@ -29,4 +29,5 @@
     <string name="start_game">Start Game</string>
     <string name="view_score_board">View Scoreboard</string>
     <string name="score">Score :</string>
+    <string name="game_score">0</string>
 </resources>

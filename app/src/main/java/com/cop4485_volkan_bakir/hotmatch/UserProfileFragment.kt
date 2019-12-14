@@ -47,7 +47,7 @@ class UserProfileFragment : Fragment() {
         startGameButton.isEnabled = false
         viewScoreBoardButton.isEnabled = false
         startGameButton.setOnClickListener {
-            val fragment = GameFragment()
+            val fragment = GameFragment.newInstance(userLevelTextView.text.toString())
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
