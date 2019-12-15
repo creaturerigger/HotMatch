@@ -30,4 +30,7 @@
     <string name="view_score_board">View Scoreboard</string>
     <string name="score">Score :</string>
     <string name="game_score">0</string>
+    <string name="timer_minute" formatted="false">03</string>
+    <string name="timer_colon">:</string>
+    <string name="timer_second" formatted="false">00</string>
 </resources>

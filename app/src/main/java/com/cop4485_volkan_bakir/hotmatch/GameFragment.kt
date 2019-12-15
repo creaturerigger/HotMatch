@@ -1,6 +1,8 @@
 package com.cop4485_volkan_bakir.hotmatch
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.fragment_game.*
 
 private const val TAG = "GameFragment"
 private const val ARG_LEVEL = "user_level"
@@ -31,11 +36,19 @@ class GameFragment : Fragment() {
     private lateinit var cardRecyclerView: RecyclerView
     private lateinit var gameCardAdapter: GameCardRecyclerAdapter
     private lateinit var userLevel: String
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+    private lateinit var gameTimerMinute: TextView
+    private lateinit var gameTimerSecond: TextView
+    private lateinit var countDownTimer: CountDownTimer
+    private var initialCountDown: Long = 180000
+    private var countDownInterval: Long = 1000
 
     private var clickedCards: MutableList<Pair<CardImage, ImageView>> = mutableListOf()
     private var levelCounter: Int = 3
     private var gameScore: Int = 0
     private var scorePoint: Int = 1
+    private var highScore: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,15 +59,38 @@ class GameFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_game, container, false)
         scoreTextView = view.findViewById(R.id.game_score_textview)
         cardRecyclerView = view.findViewById(R.id.game_cards_rv)
+        gameTimerMinute = view.findViewById(R.id.game_timer_minute)
+        gameTimerSecond = view.findViewById(R.id.game_timer_second)
         levelCounter = setLevelCounter(userLevel)
         scorePoint = setScorePoint(userLevel)
         initRecyclerView()
+
         return view
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
+        countDownTimer = object: CountDownTimer(initialCountDown, countDownInterval) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                val second = (millisUntilFinished % 60000) / 1000
+                val minute = millisUntilFinished / 60000
+                var secondText = second.toString()
+                val minuteText = "0${minute}"
+                if (second < 10) {
+                    secondText = "0$secondText"
+                }
+                gameTimerMinute.text = minuteText
+                gameTimerSecond.text = secondText
+                Log.d(TAG, "minute: $minute - second: $second")
+            }
+
+            override fun onFinish() {
+                Log.d(TAG, "Time is up!")
+            }
+        }
+        countDownTimer.start()
     }
 
     private fun initRecyclerView() {
@@ -93,9 +129,7 @@ class GameFragment : Fragment() {
 
                         removeItemsFromList(clickedCards)
                         levelCounter--
-                        if (levelCounter == 0) {
-                            removeItemsFromList(clickedCards)
-                        }
+
                         gameScore += scorePoint
                         scoreTextView.text = gameScore.toString()
                     } else {
@@ -105,7 +139,42 @@ class GameFragment : Fragment() {
             }, 600)
         }
 
-        Log.d(TAG, "clicked cards size is ${clickedCards.size}")
+        Log.d(TAG, "level counter is: $levelCounter")
+        if (levelCounter == 0) {
+            removeItemsFromList(clickedCards)
+            auth = FirebaseAuth.getInstance()
+            val user = auth.currentUser
+            if (user != null) {
+                Log.d(TAG,"user id is ${user.uid}")
+                databaseReference = FirebaseDatabase.getInstance().getReference("users").child(user.uid)
+                databaseReference.addValueEventListener(object: ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                        Log.d(TAG, "Database operation has been cancelled!")
+                    }
+
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            val gameUser = dataSnapshot.getValue(GameUser::class.java)
+
+                            if (gameUser != null) {
+                                highScore = gameUser.highScore!!
+                            }
+
+                        }
+                    }
+
+                })
+
+                if (gameScore > highScore) {
+                    databaseReference.child("highScore").setValue(gameScore)
+                    databaseReference.child("score").setValue(gameScore)
+                } else {
+                    databaseReference.child("score").setValue(gameScore)
+                }
+                databaseReference.child("level").setValue(userLevel.toInt() + 1)
+            }
+
+        }
     }
 
     private fun removeItemsFromList(list: MutableList<Pair<CardImage, ImageView>>) {
@@ -161,16 +230,16 @@ class GameFragment : Fragment() {
         var counter = 0
         when (level) {
             "1" -> {
-                counter = 3
+                counter = 2
             }
             "2" -> {
-                counter = 4
+                counter = 3
             }
             "3" -> {
-                counter = 6
+                counter = 5
             }
             "4" -> {
-                counter = 8
+                counter = 7
             }
         }
         return counter
@@ -194,7 +263,6 @@ class GameFragment : Fragment() {
         }
         return multiplier
     }
-
 
     companion object {
         fun newInstance(level: String): GameFragment {
