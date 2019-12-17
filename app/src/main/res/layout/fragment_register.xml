@@ -74,7 +74,7 @@
                 android:id="@+id/rg_text_edit_password2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/re_enter_the_password"
                 android:inputType="textPassword"
@@ -98,8 +98,9 @@
                 android:textColorHint="#A2A9AB"
                 app:backgroundTint="#fff"
                 app:layout_constraintEnd_toEndOf="@+id/rg_text_edit_email"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/rg_text_edit_email"
-                app:layout_constraintTop_toBottomOf="@+id/rg_text_edit_email" />
+                app:layout_constraintTop_toBottomOf="@+id/rg_text_edit_nickname" />
 
             <EditText
                 android:id="@+id/rg_text_edit_email"
@@ -115,6 +116,21 @@
                 app:layout_constraintEnd_toEndOf="@+id/rg_profile_image"
                 app:layout_constraintStart_toStartOf="@+id/rg_profile_image"
                 app:layout_constraintTop_toBottomOf="@+id/rg_profile_image" />
+
+            <EditText
+                android:id="@+id/rg_text_edit_nickname"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/enter_a_nickname"
+                android:inputType="text"
+                android:textColor="#fff"
+                android:textColorHint="#A2A9AB"
+                app:backgroundTint="#fff"
+                app:layout_constraintEnd_toEndOf="@+id/rg_text_edit_email"
+                app:layout_constraintStart_toStartOf="@+id/rg_text_edit_email"
+                app:layout_constraintTop_toBottomOf="@+id/rg_text_edit_email" />
 
             <Button
                 android:id="@+id/rg_register_button"
@@ -135,12 +151,12 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="24dp"
+                android:src="@drawable/profile_sample"
+                app:civ_border_color="#fff"
+                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#fff"
-                android:src="@drawable/profile_sample" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

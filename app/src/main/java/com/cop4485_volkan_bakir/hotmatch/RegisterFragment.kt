@@ -54,6 +54,7 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
     private lateinit var userEmail: EditText
     private lateinit var userPassword1: EditText
     private lateinit var userPassword2: EditText
+    private lateinit var nickNameEditText: EditText
     private lateinit var registerButton: Button
     private lateinit var profileImage: CircleImageView
     private lateinit var auth: FirebaseAuth
@@ -79,11 +80,13 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
         userPassword1 = view.findViewById(R.id.rg_text_edit_password) as EditText
         userPassword2 = view.findViewById(R.id.rg_text_edit_password2) as EditText
         registerButton = view.findViewById(R.id.rg_register_button) as Button
+        nickNameEditText = view.findViewById(R.id.rg_text_edit_nickname) as EditText
         registerButton.setOnClickListener {
             val userEmailText = userEmail.text.toString()
             val userPasssword1Text = userPassword1.text.toString()
             val userPassword2Text = userPassword2.text.toString()
-            if (validateFields(userEmailText, userPasssword1Text, userPassword2Text)) {
+            val nickName = nickNameEditText.text.toString()
+            if (validateFields(userEmailText, userPasssword1Text, userPassword2Text, nickName)) {
                 val profileImageConstantState = profileImage.drawable.constantState
                 val defaultImageConstantState =
                     resources.getDrawable(R.drawable.profile_sample).constantState
@@ -91,7 +94,12 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
                     Toast.makeText(context, "You have to add a profile image.", Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    val isOk = createUser(userEmailText, userPasssword1Text)
+                    createUser(userEmailText, userPasssword1Text, nickName)
+                    val dialogFragment = RegisteredDialogFragment()
+                    dialogFragment.apply {
+                        setTargetFragment(this@RegisterFragment, PROCEED_LOGIN)
+                        show(this@RegisterFragment.requireFragmentManager(), TAG)
+                    }
                 }
             }
         }
@@ -195,8 +203,8 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
         }
     }
 
-    private fun validateFields(email: String, password1: String, password2: String): Boolean {
-        return if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+    private fun validateFields(email: String, password1: String, password2: String, nickName: String): Boolean {
+        return if (email.isEmpty() || password1.isEmpty() || password2.isEmpty() || nickName.isEmpty()) {
             Toast.makeText(context, R.string.register_empty_fields, Toast.LENGTH_SHORT).show()
             false
         } else {
@@ -219,16 +227,16 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    private fun createUser(email: String, password: String): Boolean {
-        var isUserCreated: Boolean = false
+    private fun createUser(email: String, password: String, nickName: String): Boolean {
+        var isUserCreated = false
         val mActivity = MainActivity.newInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(mActivity) { task ->
                 isUserCreated = if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-                    updateUI(user)
-                    val dialogFragment = RegisteredDialogFragment()
+
+
                     val imm = ContextCompat.getSystemService(
                         view!!.context,
                         InputMethodManager::class.java
@@ -237,11 +245,8 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
 
                     val userProfileImageBitmap = imageView2Bitmap(profileImage)
                     uploadUserImage(userProfileImageBitmap, user)
-                    addUserToFirebaseRTDB(user!!.uid)
-                    dialogFragment.apply {
-                        setTargetFragment(this@RegisterFragment, PROCEED_LOGIN)
-                        show(this@RegisterFragment.requireFragmentManager(), TAG)
-                    }
+                    addUserToFirebaseRTDB(user!!.uid, nickName)
+
                     true
                 } else {
                     // If sign in fails, display a message to the user.
@@ -250,16 +255,16 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
                         context, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    updateUI(null)
+
                     false
                 }
             }
         return isUserCreated
     }
 
-    private fun addUserToFirebaseRTDB(userId: String) {
+    private fun addUserToFirebaseRTDB(userId: String, nickName: String) {
         database = FirebaseDatabase.getInstance().getReference("users")
-        val gameUser = GameUser(userId, 0, 0, 1)
+        val gameUser = GameUser(userId, nickName,0, 0, 1)
         database.child(userId).setValue(gameUser)
             .addOnSuccessListener {
                 Toast.makeText(context, "User has been created successfully.", Toast.LENGTH_SHORT).show()
@@ -314,9 +319,6 @@ class RegisterFragment : Fragment(), ProfileImageDialogFragment.Callbacks, Avata
         }
     }
 
-    private fun updateUI(user: FirebaseUser?) {
-
-    }
 
     private fun imageView2Bitmap(view: ImageView): Bitmap {
         return (view.drawable as BitmapDrawable).bitmap

@@ -12,12 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseUser
-import java.util.concurrent.Executors
 
 private const val TAG = "LoginFragment"
 
@@ -70,7 +68,7 @@ class LoginFragment: Fragment() {
             val userPasswordText = userPassword.text.toString()
             val isInfoValid = validateFields(userEmailText, userPasswordText)
             if (isInfoValid) {
-                var isSignedIn = false
+                val isSignedIn: Boolean
                 isSignedIn = signIn(userEmailText, userPasswordText)
                 Log.d(TAG, "isSignedIn = $isSignedIn")
             }
@@ -87,7 +85,10 @@ class LoginFragment: Fragment() {
         if (currentUser == null) {
             Log.d(TAG, "Signed in failed")
         } else {
-            Log.d(TAG, "${currentUser.email} is signed in")
+            val fragment = UserProfileFragment()
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
         }
     }
 
@@ -119,7 +120,7 @@ class LoginFragment: Fragment() {
                     val user = auth.currentUser
                     Log.d(TAG, "${user?.displayName} has signed in")
                     user?.uid?.let {
-                        loadProfileFragment(it)
+                        loadProfileFragment()
                     }
                     true
                 } else {
@@ -143,7 +144,7 @@ class LoginFragment: Fragment() {
         return isSignedIn
     }
 
-    private fun loadProfileFragment(userId: String){
+    private fun loadProfileFragment() {
         val fragment = UserProfileFragment()
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)

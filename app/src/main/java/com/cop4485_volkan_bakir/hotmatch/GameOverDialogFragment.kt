@@ -6,36 +6,31 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.widget.Button
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 
-private const val TAG = "RegisteredDailogFormat"
-
-class RegisteredDialogFragment: DialogFragment() {
+class GameOverDialogFragment: DialogFragment() {
 
     private lateinit var proceedButton: Button
-    private lateinit var mainDialog: ConstraintLayout
+    private var isButtonClicked = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
-        val view = LayoutInflater.from(context).inflate(R.layout.fragment_registered_dialog, null)
-        proceedButton = view.findViewById(R.id.proceed_button)
-        mainDialog = view.findViewById(R.id.registered_dialog)
+        val view = LayoutInflater.from(context).inflate(R.layout.game_over_dialog_fragment, null)
+        proceedButton = view.findViewById(R.id.go_proceed_button)
         builder.setView(view)
         val d = builder.create()
         d.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         d.setCancelable(false)
         proceedButton.setOnClickListener {
-            val fragment = LoginFragment()
-            activity?.supportFragmentManager?.beginTransaction()!!
+            val fragment = UserProfileFragment()
+            requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit()
+            isButtonClicked = true
             d.dismiss()
         }
         return d
     }
+
 }

@@ -1,6 +1,5 @@
 package com.cop4485_volkan_bakir.hotmatch
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView

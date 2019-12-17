@@ -12,7 +12,7 @@
     <string name="empty_fields">E-mail and password fields can\'t be empty.</string>
     <string name="is_not_valid_email">You must enter a valid e-mail address!</string>
     <string name="logging_in">Logging in</string>
-    <string name="register_empty_fields">Email and password fields can\'t be empty!</string>
+    <string name="register_empty_fields">Fields can\'t be empty!</string>
     <string name="passwords_must_match">Passwords must match!</string>
     <string name="user_created">User has been created.</string>
     <string name="registered_user_message">You have already a registered user, please use your e-mail address and password to log in.</string>
@@ -33,4 +33,15 @@
     <string name="timer_minute" formatted="false">03</string>
     <string name="timer_colon">:</string>
     <string name="timer_second" formatted="false">00</string>
+    <string name="game_congratulations">Congratulations you finished the game!</string>
+    <string name="user_final_score_desc">Your Score:</string>
+    <string name="user_final_score">0</string>
+    <string name="game_over">GAME OVER!</string>
+    <string name="bonus_points">Bonus points:</string>
+    <string name="total_score">Total Score:</string>
+    <string name="score_board">Hot Match Score Board</string>
+    <string name="enter_a_nickname">Enter a nickname</string>
+    <string name="sb_nickname">nick name</string>
+    <string name="sb_high_score">high score</string>
+    <string name="user_nickname">NickName</string>
 </resources>
